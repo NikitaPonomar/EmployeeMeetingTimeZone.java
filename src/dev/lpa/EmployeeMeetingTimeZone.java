@@ -1,5 +1,6 @@
 package dev.lpa;
 
+import java.time.DayOfWeek;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -26,6 +27,10 @@ public class EmployeeMeetingTimeZone {
             System.out.println("current day is " + day);
             firstDate = firstDate.plusDays(1);
             secondDate = secondDate.plusDays(1);
+            DayOfWeek first = firstDate.getDayOfWeek();
+            DayOfWeek second = secondDate.getDayOfWeek();
+            if (first == DayOfWeek.SATURDAY || first == DayOfWeek.SUNDAY) continue;
+            if (second == DayOfWeek.SATURDAY || second == DayOfWeek.SUNDAY) continue;
             checkingWorkingHours(firstDate, secondDate, firstPerson, secondPerson);
             checkingWorkingHours(secondDate, firstDate, secondPerson, firstPerson);
         }
@@ -36,7 +41,7 @@ public class EmployeeMeetingTimeZone {
     public static void checkingWorkingHours(ZonedDateTime date, ZonedDateTime anotherDate,
                                             Person person, Person anotherPerson) {
         var dtf =
-                DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM);
+                DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL);
 
         for (int i = 7; i <= 20; i++) {
             date = date.withHour(i).withMinute(0).withSecond(0);
@@ -45,7 +50,7 @@ public class EmployeeMeetingTimeZone {
             ZoneId secondZone = date.getZone();
             if (anotherDate.getHour() >= 7 && anotherDate.getHour() <= 20) {
                 // working hours in different time zones
-               System.out.println(person.name() + " ["
+                System.out.println(person.name() + " ["
                         + person.dateTime().getZone() + "] : "
                         + date.format(dtf.withLocale(person.locale())) + " <---> "
                         + anotherPerson.name() + " ["
