@@ -41,7 +41,8 @@ public class EmployeeMeetingTimeZone {
     public static void checkingWorkingHours(ZonedDateTime date, ZonedDateTime anotherDate,
                                             Person person, Person anotherPerson) {
         var dtf =
-                DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL);
+                DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL,
+                        FormatStyle.SHORT);
 
         for (int i = 7; i <= 20; i++) {
             date = date.withHour(i).withMinute(0).withSecond(0);
